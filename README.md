@@ -14,65 +14,12 @@ O projeto segue a arquitetura MVC, e inclui testes automatizados com o **Jest** 
 
 ---
 
-## Estrutura do projeto:
-
-`└── 📁ATV04-API_SeqCLI_Jest`
-
-  `└── 📁config`
-
-​    `├── config.json`	# Configuração do ambiente (dev, test e prod) 
-
-  `└── 📁controllers`
-
-​    `├── pedidoController.js`	# Lógica de negócio do usuário
-
-​    `├── usuarioController.js`	# Lógica de negócio dos pedidos
-
-  `└── 📁migrations`
-
-​    `├── 20251030001204-create-usuario.js` 	# Criação da model 'Usuários'
-
-​    `├── 20251030001212-create-pedido.js`	# Criação da model 'Pedidos'
-
-  `└── 📁models`
-
-​    `├── index.js`	# Inicializando o Sequelize
-
-​    `├── pedido.js`	# Model do pedido (criada pelo sequelize-cli)
-
-​    `├── usuario.js`	# Model do usuário (criada pelo sequelize-cli)
-
-  `└── 📁routes`
-
-​    `├── pedidosRoutes.js`	# Rotas REST do pedido
-
-​    `├── usuarioRoutes.js`	# Rotas REST do usuário
-
-  `└── 📁seeders` 	# Vazio, porém não inútil. Serve para 'semear' o banco com informações para o teste
-
-  `└── 📁tests`
-
-​    `├── pedidoController.test.js`	# Testes unitários dos produtos
-
-​    `├── setup.js`	# Configuração dos testes
-
-​    `├── usuarioController.test.js`	# Testes unitários dos usuários
-
-  `├── app.js`	# Inicialização do app com Express em conjunto com as rotas
-
-  `├── package-lock.json`
-
-  `├── package.json`	# Dependências e scripts de inicialização
-
-  `└── README.md`
-
----
-
 ## Banco de dados
 
 O banco de dados foi configurado com três ambientes, com base nos scripts do arquivo **`config.json`**:
 
-`{
+```
+{
   "development": {
     "username": "root",
     "password": "root",
@@ -94,7 +41,10 @@ O banco de dados foi configurado com três ambientes, com base nos scripts do ar
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
-}`
+}
+```
+
+
 
 ---
 
@@ -102,19 +52,25 @@ O banco de dados foi configurado com três ambientes, com base nos scripts do ar
 
 ### Inicialização:
 
-`npm init -y`
+```
+npm init -y
 
-`npm install express sequelize mysql2 jest supertest`
+npm install express sequelize mysql2 jest supertest
+```
 
 ### Criando as models + migrations:
 
-`npx sequelize-cli model:generate --name Usuario --attributes nome:string,email:string`
+```
+npx sequelize-cli model:generate --name Usuario --attributes nome:string,email:string
 
-`npx sequelize-cli model:generate --name Pedido --attributes descricao:string,valor:float,usuarioId:integer`
+npx sequelize-cli model:generate --name Pedido --attributes descricao:string,valor:float,usuarioId:integer 
+```
 
 ### Execução das migrations:
 
-`npx sequelize-cli db:migrate`
+```
+npx sequelize-cli db:migrate
+```
 
 Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configuração dos testes no Jest.
 
@@ -147,8 +103,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Verifica se o usuário é retornado com ID válido e persiste no banco.
 
-  `const usuario = await criarUsuario("Arthur", "arthur@email.com");`
-  `expect(usuario.nome).toBe("Arthur");`
+  ```
+  const usuario = await criarUsuario("Arthur", "arthur@email.com");
+  expect(usuario.nome).toBe("Arthur");
+  ```
 
 ### buscarUsuarioPorId(id)
 
@@ -156,8 +114,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Garante retorno válido para ID existente e `null` para inexistente.
 
-  `const encontrado = await buscarUsuarioPorId(usuario.id);`
-  `expect(encontrado.email).toBe("arthur@email.com");`
+  ```
+  const encontrado = await buscarUsuarioPorId(usuario.id);
+  expect(encontrado.email).toBe("arthur@email.com");
+  ```
 
 ### atualizarNomeUsuario(id, novoNome)
 
@@ -165,8 +125,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Verifica atualização bem-sucedida e erro em caso de ID inválido.
 
-  `const atualizado = await atualizarNomeUsuario(usuario.id, "Arthur S. Sepp");`
-  `expect(atualizado.nome).toBe("Arthur S. Sepp");`
+  ```
+  const atualizado = await atualizarNomeUsuario(usuario.id, "Arthur S. Sepp");`
+  expect(atualizado.nome).toBe("Arthur S. Sepp");
+  ```
 
 ### deletarUsuario(id)
 
@@ -174,9 +136,11 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Após exclusão, busca retorna `null`.
 
-  `await deletarUsuario(usuario.id);`
-  `const inexistente = await buscarUsuarioPorId(usuario.id);`
-  `expect(inexistente).toBeNull();`
+  ```
+  await deletarUsuario(usuario.id);
+  const inexistente = await buscarUsuarioPorId(usuario.id);
+  expect(inexistente).toBeNull();
+  ```
 
 ### criarPedido(usuarioId, descricao, valor)
 
@@ -184,8 +148,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Verifica se o pedido é criado e associado corretamente.
 
-  `const pedido = await criarPedido(usuario.id, "Mouse Gamer", 150.00);`
-  `expect(pedido.usuarioId).toBe(usuario.id);`
+  ```
+  const pedido = await criarPedido(usuario.id, "Mouse Gamer", 150.00);
+  expect(pedido.usuarioId).toBe(usuario.id);
+  ```
 
 ### listarPedidosDoUsuario(usuarioId)
 
@@ -193,8 +159,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Confere se todos pertencem ao mesmo `usuarioId`
 
-  `const pedidos = await listarPedidosDoUsuario(usuario.id);`
-  `expect(pedidos.every(p => p.usuarioId === usuario.id)).toBe(true);`
+  ```
+  const pedidos = await listarPedidosDoUsuario(usuario.id);
+  expect(pedidos.every(p => p.usuarioId === usuario.id)).toBe(true);
+  ```
 
 ### calcularTotalPedidos(usuarioId)
 
@@ -202,8 +170,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Verifica total correto e 0 quando não há pedidos.
 
-  `const total = await calcularTotalPedidos(usuario.id);`
-  `expect(total).toBeCloseTo(150.00);`
+  ```
+  const total = await calcularTotalPedidos(usuario.id);
+  expect(total).toBeCloseTo(150.00);
+  ```
 
 ### contarUsuarios()
 
@@ -211,8 +181,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Verifica contagem correta após inserção e exclusão.
 
-  `const count = await contarUsuarios();`
-  `expect(count).toBeGreaterThan(0);`
+  ```
+  const count = await contarUsuarios();
+  expect(count).toBeGreaterThan(0);
+  ```
 
 ### usuarioComMaisPedidos()
 
@@ -220,8 +192,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Confere se retorna o correto e `null` quando não há pedidos.
 
-  `const topUser = await usuarioComMaisPedidos();`
-  `expect(topUser.nome).toBe("Arthur");`
+  ```
+  const topUser = await usuarioComMaisPedidos();
+  expect(topUser.nome).toBe("Arthur");
+  ```
 
 ### usuariosAcimaDe(valor)
 
@@ -229,8 +203,10 @@ Em seguida, foram desenvolvidos outros pontos como controllers, rotas e configur
 
 * **Teste:** Garante que apenas usuários com gasto maior que o valor apareçam.
 
-  `const ricos = await usuariosAcimaDe(100);`
-  `expect(ricos.length).toBeGreaterThan(0);`
+  ```
+  * const ricos = await usuariosAcimaDe(100);
+    expect(ricos.length).toBeGreaterThan(0);
+  ```
 
 ---
 
@@ -242,7 +218,9 @@ Cada controller é testado de forma individual, simulando a camada de dados real
 
 Podemos executar os testes com:
 
-`npm test`
+```
+npm test
+```
 
 ---
 
